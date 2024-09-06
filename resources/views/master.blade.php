@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@yield('title', 'Blog System')</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Prompt', sans-serif;
+            /* ใช้ฟอนต์ Prompt */
+            
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-image: url('{{ asset('images/bg.png') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* ทำให้ภาพพื้นหลังคงที่ */
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .navbar-custom {
+            background-color: #092174;
+            padding: 1rem 2rem;
+            
+        }
+
+        .navbar-custom .navbar-brand {
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            font-family: 'Prompt', sans-serif;
+            /* ใช้ฟอนต์ Prompt ใน Navbar */
+        }
+
+        .navbar-custom .navbar-brand img {
+            height: 100px;
+            /* ปรับขนาดโลโก้ */
+            margin-right: 1rem;
+            /* ช่องว่างระหว่างโลโก้และเส้น */
+        }
+
+        .logo-divider {
+            border-left: 2px solid #ffffff;
+            /* เส้นแนวตั้ง */
+            height: 100px;
+            /* สูงเท่ากับโลโก้ */
+            margin-right: 1rem;
+            /* ช่องว่างระหว่างเส้นและข้อความ */
+        }
+
+        .logo-text {
+            color: #ffffff;
+            text-align: left;
+            font-family: 'Prompt', sans-serif;
+            /* ใช้ฟอนต์ Prompt */
+        }
+
+        .main-title {
+            font-size: 1.7rem;
+            /* ขนาดฟอนต์ใหญ่สำหรับชื่อเรื่องหลัก */
+            font-weight: bold;
+        }
+
+        .sub-title {
+            font-size: 1.2rem;
+            /* ขนาดฟอนต์เล็กกว่าในคำบรรยาย */
+        }
+
+        .navbar-custom .navbar-nav .nav-link {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .navbar-custom .navbar-nav .nav-link.active {
+            color: #ffffff;
+        }
+
+        .user-info,
+        .budget-info {
+            color: #ffffff;
+            text-align: right;
+        }
+
+        .user-info {
+            font-size: 1.5rem;
+        }
+
+        .budget-info {
+            font-size: 1.3rem;
+        }
+
+        footer {
+            background-color: #5EC7E2;
+            color: #000000;
+            padding: 1rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url('/page') }}">
+                <img src="{{ asset('images/tsu.png') }}" alt="Logo">
+                <div class="logo-divider"></div>
+                <div class="logo-text">
+                    <span class="main-title">ระบบจัดทำเอกสารจัดซื้อจัดจ้างอัตโนมัติ</span><br>
+                    <span class="sub-title">คณะวิทยาศาสตร์และนวัตกรรมดิจิทัล</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-flex flex-column align-items-end">
+                        @auth
+                            <span class="navbar-text user-info">
+                                สวัสดีคุณ {{ Auth::user()->name }}
+                            </span>
+                        @else
+                            <span class="navbar-text user-info">
+
+                            </span>
+                        @endauth
+                        @auth
+                            <span class="navbar-text budget-info">
+                                งบประมาณคงเหลือปัจจุบัน: บาท
+                            </span>
+                        @else
+                            <span class="navbar-text budget-info">
+
+                            </span>
+                        @endauth
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container content">
+        @yield('info')
+    </div>
+
+    <footer>
+        <p>&copy; 2024 www.tsu.ac.th All rights reserved</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-7C1ie8Ed3KjzBBTYjcFad4KN1FwZhG9LFf4+N41yG+HoTC5lZ92R9+FXl5Do8hPM" crossorigin="anonymous">
+    </script>
+
+</body>
+
+</html>
