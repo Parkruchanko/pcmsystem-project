@@ -1,4 +1,5 @@
 @extends('master')
+
 @section('title', 'Procurement System')
 
 @section('info')
@@ -18,6 +19,12 @@
 
         .card {
             margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
         }
 
         .header {
@@ -29,6 +36,16 @@
 
         .chart {
             padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .chart-title {
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         .footer {
@@ -39,117 +56,122 @@
             position: relative;
             bottom: 0;
         }
-    </style>
-    </head>
 
-    <body>
-        <div class="container-flex">
-            <div class="card">
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row text-center">
-                            <div class="col-md-3">
-                                <div class="card text-white bg-danger mb-3">
-                                    <div class="card-body">
-                                        <h5 class="card-title">จัดซื้อ</h5>
-                                        <p class="card-text">159 รายการ</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-primary mb-3">
-                                    <div class="card-body">
-                                        <h5 class="card-title">จัดจ้าง</h5>
-                                        <p class="card-text">200 รายการ</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-success mb-3">
-                                    <div class="card-body">
-                                        <h5 class="card-title">วัสดุ</h5>
-                                        <p class="card-text">2000 รายการ</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-danger mb-3">
-                                    <div class="card-body">
-                                        <h5 class="card-title">ครุภัณฑ์</h5>
-                                        <p class="card-text">400 รายการ</p>
-                                    </div>
+        .btn-back {
+            background-color: #ff4d4d;
+            border-color: #ff4d4d;
+        }
+
+        .btn-back:hover {
+            background-color: #ff3333;
+            border-color: #ff3333;
+        }
+    </style>
+
+    <div class="container-flex">
+        <div class="card">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="card text-white bg-danger mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">จัดซื้อ</h5>
+                                    <p class="card-text">{{ array_sum($purchaseData) }} รายการ</p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card chart">
-                                    <h5 class="card-title">รายการจัดซื้อจัดจ้างภายในปี 2566</h5>
-                                    <canvas id="purchaseChart"></canvas>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">จัดจ้าง</h5>
+                                    <p class="card-text">{{ array_sum($hiringData) }} รายการ</p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card chart">
-                                    <h5 class="card-title">รายการวัสดุและครุภัณฑ์ ภายในปี 2566</h5>
-                                    <canvas id="materialChart"></canvas>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">วัสดุ</h5>
+                                    <p class="card-text">2000 รายการ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">ครุภัณฑ์</h5>
+                                    <p class="card-text">400 รายการ</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card chart">
+                                <h5 class="chart-title">รายการจัดซื้อจัดจ้างภายในปี {{ now()->year + 543 }}</h5> <!-- ใช้ปีปัจจุบัน -->
+                                <canvas id="purchaseChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card chart">
+                                <h5 class="chart-title">รายการวัสดุและครุภัณฑ์ ภายในปี {{ now()->year + 543 }}</h5> <!-- ใช้ปีปัจจุบัน -->
+                                <canvas id="materialChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <a href="{{ url('/page') }}" role="button" class="btn btn-danger">Back</a>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx1 = document.getElementById('purchaseChart').getContext('2d');
+        var purchaseChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: @json($months),
+                datasets: [{
+                        label: 'จัดซื้อ',
+                        data: @json($purchaseData),
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'จัดจ้าง',
+                        data: @json($hiringData),
+                        borderColor: 'blue',
+                        fill: false
+                    }
+                ]
+            }
+        });
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            var ctx1 = document.getElementById('purchaseChart').getContext('2d');
-            var purchaseChart = new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม',
-                        'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-                    ],
-                    datasets: [{
-                            label: 'จัดซื้อ',
-                            data: [10, 20, 30, 40, 30, 20, 50, 40, 30, 50, 40, 60],
-                            borderColor: 'yellow',
-                            fill: false
-                        },
-                        {
-                            label: 'จัดจ้าง',
-                            data: [20, 30, 40, 50, 40, 30, 60, 50, 40, 60, 50, 70],
-                            borderColor: 'red',
-                            fill: false
-                        }
-                    ]
-                }
-            });
+        var ctx2 = document.getElementById('materialChart').getContext('2d');
+        var materialChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: @json($months),
+                datasets: [{
+                        label: 'วัสดุ',
+                        data: [30, 40, 50, 60, 50, 40, 70, 60, 50, 70, 60, 80], // You can replace with actual data if available
+                        borderColor: 'green',
+                        fill: false
+                    },
+                    {
+                        label: 'ครุภัณฑ์',
+                        data: [40, 50, 60, 70, 60, 50, 80, 70, 60, 80, 70, 90], // You can replace with actual data if available
+                        borderColor: 'yellow',
+                        fill: false
+                    }
+                ]
+            }
+        });
+    </script>
 
-            var ctx2 = document.getElementById('materialChart').getContext('2d');
-            var materialChart = new Chart(ctx2, {
-                type: 'line',
-                data: {
-                    labels: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม',
-                        'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-                    ],
-                    datasets: [{
-                            label: 'วัสดุ',
-                            data: [30, 40, 50, 60, 50, 40, 70, 60, 50, 70, 60, 80],
-                            borderColor: 'green',
-                            fill: false
-                        },
-                        {
-                            label: 'ครุภัณฑ์',
-                            data: [40, 50, 60, 70, 60, 50, 80, 70, 60, 80, 70, 90],
-                            borderColor: 'red',
-                            fill: false
-                        }
-                    ]
-                }
-            });
-        </script>
-    </body>
 @endsection

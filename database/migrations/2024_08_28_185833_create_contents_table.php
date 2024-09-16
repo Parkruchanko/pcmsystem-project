@@ -29,6 +29,7 @@ return new class extends Migration
             $table->id(); // Primary key, auto-incrementing
             $table->string('product_name');
             $table->integer('quantity');
+            $table->string('unit');
             $table->float('product_price');
             $table->foreignId('info_id')->constrained('info')->onDelete('cascade'); // Foreign key
             $table->timestamps();
@@ -71,6 +72,10 @@ return new class extends Migration
             $table->foreignId('info_id')->constrained('info')->onDelete('cascade'); // Foreign key
             $table->timestamps();
         });
+        Schema::table('infos', function (Blueprint $table) {
+            $table->string('template_source')->nullable(); // เก็บค่า 'form' หรือ 'formk'
+        });
+        
     }
 
     /**

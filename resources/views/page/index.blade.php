@@ -83,14 +83,14 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-3 mb-3">
-                    <a class="btn-img">
+                    <a href="{{ url('/page/history') }}" class="btn-img">
                         <img src="{{ asset('images/logfile.png') }}" alt="Log File">
                     </a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 col-md-3 mb-3">
-                    <a class="btn-img">
+                    <a href="{{ url('/summary') }}" class="btn-img">
                         <img src="{{ asset('images/sm.png') }}" alt="Image 9">
                     </a>
                 </div>
@@ -100,7 +100,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-3 mb-3">
-                    <a class="btn-img">
+                    <a href="{{ url('/dashboard') }}" class="btn-img">
                         <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
                     </a>
                 </div>

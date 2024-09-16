@@ -57,6 +57,7 @@ class Product extends Model
     protected $fillable = [
         'product_name',
         'quantity',
+        'unit',
         'product_price',
         'info_id',
     ];
@@ -139,4 +140,8 @@ class Inspector extends Model
     {
         return $this->belongsTo(Info::class, 'info_id', 'id');
     }
+
+    
 }
+
+

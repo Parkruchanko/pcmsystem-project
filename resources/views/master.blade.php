@@ -10,8 +10,11 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
 
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
         html,
@@ -19,20 +22,29 @@
             height: 100%;
             margin: 0;
             font-family: 'Prompt', sans-serif;
-            /* ใช้ฟอนต์ Prompt */
-            
         }
 
         body {
             display: flex;
             flex-direction: column;
-            background-image: url('{{ asset('images/bg.png') }}');
+            position: relative;
+            min-height: 100vh;
+            z-index: 1;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ asset('images/bg1.jpg') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            /* ทำให้ภาพพื้นหลังคงที่ */
-            min-height: 100vh;
+            opacity: 0.5;
+            z-index: -1;
         }
 
         .content {
@@ -43,7 +55,6 @@
         .navbar-custom {
             background-color: #092174;
             padding: 1rem 2rem;
-            
         }
 
         .navbar-custom .navbar-brand {
@@ -51,41 +62,32 @@
             display: flex;
             align-items: center;
             font-family: 'Prompt', sans-serif;
-            /* ใช้ฟอนต์ Prompt ใน Navbar */
         }
 
         .navbar-custom .navbar-brand img {
             height: 100px;
-            /* ปรับขนาดโลโก้ */
             margin-right: 1rem;
-            /* ช่องว่างระหว่างโลโก้และเส้น */
         }
 
         .logo-divider {
             border-left: 2px solid #ffffff;
-            /* เส้นแนวตั้ง */
             height: 100px;
-            /* สูงเท่ากับโลโก้ */
             margin-right: 1rem;
-            /* ช่องว่างระหว่างเส้นและข้อความ */
         }
 
         .logo-text {
             color: #ffffff;
             text-align: left;
             font-family: 'Prompt', sans-serif;
-            /* ใช้ฟอนต์ Prompt */
         }
 
         .main-title {
             font-size: 1.7rem;
-            /* ขนาดฟอนต์ใหญ่สำหรับชื่อเรื่องหลัก */
             font-weight: bold;
         }
 
         .sub-title {
             font-size: 1.2rem;
-            /* ขนาดฟอนต์เล็กกว่าในคำบรรยาย */
         }
 
         .navbar-custom .navbar-nav .nav-link {
@@ -143,27 +145,52 @@
                                 สวัสดีคุณ {{ Auth::user()->name }}
                             </span>
                         @else
-                            <span class="navbar-text user-info">
-
-                            </span>
+                            <span class="navbar-text user-info"></span>
                         @endauth
+
                         @auth
                             <span class="navbar-text budget-info">
-                                งบประมาณคงเหลือปัจจุบัน: บาท
+                                งบประมาณคงเหลือปัจจุบัน: {{ number_format($budget->remaining_amount, 2) }} บาท
                             </span>
-                        @else
-                            <span class="navbar-text budget-info">
-
-                            </span>
+                            <!-- ปุ่มเปิด modal -->
+                            <a href="{{ route('budget.add') }}" class="btn btn-danger">เพิ่มงบประมาณ</a>
                         @endauth
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
     <div class="container content">
         @yield('info')
     </div>
+
+    <!-- Modal สำหรับเพิ่มงบประมาณ -->
+    @auth
+        <div class="modal fade" id="addBudgetModal" tabindex="-1" aria-labelledby="addBudgetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addBudgetModalLabel">เพิ่มงบประมาณ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('budget.add') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="budget_amount" class="form-label">จำนวนงบประมาณ</label>
+                                <input type="number" class="form-control" id="budget_amount" name="budget_amount" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endauth
 
     <footer>
         <p>&copy; 2024 www.tsu.ac.th All rights reserved</p>
@@ -172,7 +199,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-7C1ie8Ed3KjzBBTYjcFad4KN1FwZhG9LFf4+N41yG+HoTC5lZ92R9+FXl5Do8hPM" crossorigin="anonymous">
     </script>
-
+    <!-- สคริปต์แสดง popup -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('addBudgetModal'));
+            myModal.show();  // แสดงโมดัลเมื่อหน้าโหลด
+        });
+    </script>
+    
 </body>
 
 </html>
