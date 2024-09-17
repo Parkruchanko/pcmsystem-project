@@ -68,16 +68,16 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="office_name" class="form-label">คณะ</label>
-                            <input type="text" class="form-control" id="office_name" name="office_name" placeholder="คณะ"
+                            <label for="office_name" class="form-label">สังกัด</label>
+                            <input type="text" class="form-control" id="office_name" name="office_name" placeholder="สังกัด"
                                 required value="{{ old('office_name', $info->office_name ?? '') }}">
                         </div>
 
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label for="attachdorder" class="form-label">เอกต้องทำถึง</label>
+                                <label for="attachdorder" class="form-label">เอกสารต้องทำถึง</label>
                                 <input type="text" class="form-control" id="attachdorder" name="attachdorder"
-                                    placeholder="เอกต้องทำถึง" required
+                                    placeholder="เอกสารต้องทำถึง" required
                                     value="{{ old('attachdorder', $info->attachdorder ?? '') }}">
                             </div>
                             <div class="col-md-6 mb-3">
@@ -99,7 +99,7 @@
                 </div>
                 <!-- Products Section -->
                 <div class="card mb-4">
-                    <h3 class="card-header" style="background-color: #092174;">ผลิตภัณฑ์</h3>
+                    <h3 class="card-header" style="background-color: #092174;">รายละเอียด</h3>
                     <div class="card-body" style="background-color: #6db8ff;">
                         <div class="mb-3">
                             <div id="products-container">
@@ -411,7 +411,7 @@
 
                 <!-- Committee Members Section -->
                 <div class="card mb-4">
-                    <h3 class="card-header" style="background-color: #092174;">คณะกรรมการ</h3>
+                    <h3 class="card-header" style="background-color: #092174;">ผู้ลงนาม</h3>
                     <div class="card-body" style="background-color: #6db8ff;">
                         <div class="mb-3">
                             <div id="committee-container">
@@ -425,11 +425,11 @@
                                             <!-- Dropdown สำหรับเลือกชื่อสมาชิก -->
                                             <div class="flex-fill me-2">
                                                 <label for="committeemembers[{{ $loop->index }}][member_name]"
-                                                    class="form-label">ชื่อสมาชิก</label>
+                                                    class="form-label">ชื่อผู้ลงนาม</label>
                                                 <select class="form-select"
                                                     id="committeemembers[{{ $loop->index }}][member_name_select]"
                                                     onchange="setNameAndPosition(this, 'committeemembers[{{ $loop->index }}][member_name]', 'committeemembers[{{ $loop->index }}][member_position]')">
-                                                    <option value="">-- เลือกชื่อสมาชิก --</option>
+                                                    <option value="">-- เลือกผู้ลงนาม --</option>
                                                     @foreach ($allCommitteeMembers as $availableMember)
                                                         <option value="{{ $availableMember->member_name }}"
                                                             @if ($committee_member->member_name == $availableMember->member_name) selected @endif>
@@ -440,7 +440,7 @@
                                                 <input type="text" class="form-control mt-2"
                                                     id="committeemembers[{{ $loop->index }}][member_name]"
                                                     name="committeemembers[{{ $loop->index }}][member_name]"
-                                                    placeholder="ชื่อสมาชิก"
+                                                    placeholder="ชื่อผู้ลงนาม"
                                                     value="{{ old('committeemembers.' . $loop->index . '.member_name', $committee_member->member_name) }}">
                                             </div>
 
@@ -463,10 +463,10 @@
                                     <div class="committee-member-entry mb-3 d-flex align-items-center">
                                         <div class="flex-fill me-2">
                                             <label for="committeemembers[0][member_name]"
-                                                class="form-label">ชื่อสมาชิก</label>
+                                                class="form-label">ชื่อผู้ลงนาม</label>
                                             <select class="form-select" id="committeemembers[0][member_name_select]"
                                                 onchange="setNameAndPosition(this, 'committeemembers[0][member_name]', 'committeemembers[0][member_position]')">
-                                                <option value="">-- เลือกชื่อสมาชิก --</option>
+                                                <option value="">-- เลือกผู้ลงนาม --</option>
                                                 @foreach ($allCommitteeMembers as $availableMember)
                                                     <option value="{{ $availableMember->member_name }}">
                                                         {{ $availableMember->member_name }}
@@ -475,7 +475,7 @@
                                             </select>
                                             <input type="text" class="form-control mt-2"
                                                 id="committeemembers[0][member_name]"
-                                                name="committeemembers[0][member_name]" placeholder="ชื่อสมาชิก" required>
+                                                name="committeemembers[0][member_name]" placeholder="ชื่อผู้ลงนาม" required>
                                         </div>
                                         <div class="flex-fill ms-2">
                                             <label for="committeemembers[0][member_position]"
@@ -509,7 +509,7 @@
 
                 <!-- Bidders Section -->
                 <div class="card mb-4">
-                    <h3 class="card-header" style="background-color: #092174;">ผู้เสนอราคา</h3>
+                    <h3 class="card-header" style="background-color: #092174;">เจ้าหน้าที่</h3>
                     <div class="card-body" style="background-color: #6db8ff;">
                         <div class="mb-3">
                             <div id="bidders-container">
@@ -521,11 +521,11 @@
                                         <!-- ชื่อผู้เสนอราคาใน Dropdown -->
                                         <div class="mb-2">
                                             <label for="bidders[{{ $loop->index }}][bidder_name]"
-                                                class="form-label">ชื่อผู้เสนอราคา</label>
+                                                class="form-label">ชื่อเจ้าหน้าที่</label>
                                             <select class="form-select"
                                                 id="bidders[{{ $loop->index }}][bidder_name_select]"
                                                 onchange="setBidderNameAndPosition(this, 'bidders[{{ $loop->index }}][bidder_name]', 'bidders[{{ $loop->index }}][bidder_position]')">
-                                                <option value="">-- เลือกผู้เสนอราคา --</option>
+                                                <option value="">-- เลือกเจ้าหน้าที่ --</option>
                                                 @foreach ($allBidders as $availableBidder)
                                                     <option value="{{ $availableBidder->bidder_name }}"
                                                         @if ($bidder->bidder_name == $availableBidder->bidder_name) selected @endif>
@@ -536,7 +536,7 @@
                                             <input type="text" class="form-control mt-2"
                                                 id="bidders[{{ $loop->index }}][bidder_name]"
                                                 name="bidders[{{ $loop->index }}][bidder_name]"
-                                                placeholder="ชื่อผู้เสนอราคา"
+                                                placeholder="ชื่อเจ้าหน้าที่"
                                                 value="{{ old('bidders.' . $loop->index . '.bidder_name', $bidder->bidder_name) }}">
                                         </div>
 
@@ -558,17 +558,17 @@
                                     <div class="bidder-entry mb-3 d-flex flex-wrap">
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="bidders[0][bidder_name]"
-                                                class="form-label">ชื่อผู้เสนอราคา</label>
+                                                class="form-label">ชื่อเจ้าหน้าที่</label>
                                             <select class="form-select" id="bidders[0][bidder_name_select]"
                                                 onchange="setBidderNameAndPosition(this, 'bidders[0][bidder_name]', 'bidders[0][bidder_position]')">
-                                                <option value="">-- เลือกผู้เสนอราคา --</option>
+                                                <option value="">-- เลือกเจ้าหน้าที่ --</option>
                                                 @foreach ($allBidders as $availableBidder)
                                                     <option value="{{ $availableBidder->bidder_name }}">
                                                         {{ $availableBidder->bidder_name }}</option>
                                                 @endforeach
                                             </select>
                                             <input type="text" class="form-control mt-2" id="bidders[0][bidder_name]"
-                                                name="bidders[0][bidder_name]" placeholder="ชื่อผู้เสนอราคา" required>
+                                                name="bidders[0][bidder_name]" placeholder="ชื่อเจ้าหน้าที่" required>
                                         </div>
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="bidders[0][bidder_position]" class="form-label">ตำแหน่ง</label>
@@ -582,17 +582,17 @@
                                     <div class="bidder-entry mb-3 d-flex flex-wrap">
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="bidders[1][bidder_name]"
-                                                class="form-label">ชื่อผู้เสนอราคา</label>
+                                                class="form-label">ชื่อเจ้าหน้าที่</label>
                                             <select class="form-select" id="bidders[1][bidder_name_select]"
                                                 onchange="setBidderNameAndPosition(this, 'bidders[1][bidder_name]', 'bidders[1][bidder_position]')">
-                                                <option value="">-- เลือกผู้เสนอราคา --</option>
+                                                <option value="">-- เลือกเจ้าหน้าที่ --</option>
                                                 @foreach ($allBidders as $availableBidder)
                                                     <option value="{{ $availableBidder->bidder_name }}">
                                                         {{ $availableBidder->bidder_name }}</option>
                                                 @endforeach
                                             </select>
                                             <input type="text" class="form-control mt-2" id="bidders[1][bidder_name]"
-                                                name="bidders[1][bidder_name]" placeholder="ชื่อผู้เสนอราคา" required>
+                                                name="bidders[1][bidder_name]" placeholder="ชื่อเจ้าหน้าที่" required>
                                         </div>
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="bidders[1][bidder_position]" class="form-label">ตำแหน่ง</label>
@@ -623,7 +623,7 @@
 
                 <!-- Inspectors Section -->
                 <div class="card mb-4">
-                    <h3 class="card-header" style="background-color: #092174;">ผู้ตรวจสอบ</h3>
+                    <h3 class="card-header" style="background-color: #092174;">กรรมการ</h3>
                     <div class="card-body" style="background-color: #6db8ff;">
                         <div class="mb-3">
                             <div id="inspectors-container">
@@ -635,11 +635,11 @@
                                         <!-- ชื่อผู้ตรวจสอบใน Dropdown -->
                                         <div class="mb-2">
                                             <label for="inspectors[{{ $loop->index }}][inspector_name]"
-                                                class="form-label">ชื่อผู้ตรวจสอบ</label>
+                                                class="form-label">ชื่อกรรมการ</label>
                                             <select class="form-select"
                                                 id="inspectors[{{ $loop->index }}][inspector_name_select]"
                                                 onchange="setInspectorNameAndPosition(this, 'inspectors[{{ $loop->index }}][inspector_name]', 'inspectors[{{ $loop->index }}][inspector_position]')">
-                                                <option value="">-- เลือกผู้ตรวจสอบ --</option>
+                                                <option value="">-- เลือกกรรมการ --</option>
                                                 @foreach ($allInspectors as $availableInspector)
                                                     <option value="{{ $availableInspector->inspector_name }}"
                                                         @if ($inspector->inspector_name == $availableInspector->inspector_name) selected @endif>
@@ -650,7 +650,7 @@
                                             <input type="text" class="form-control mt-2"
                                                 id="inspectors[{{ $loop->index }}][inspector_name]"
                                                 name="inspectors[{{ $loop->index }}][inspector_name]"
-                                                placeholder="ชื่อผู้ตรวจสอบ"
+                                                placeholder="ชื่อกรรมการ"
                                                 value="{{ old('inspectors.' . $loop->index . '.inspector_name', $inspector->inspector_name) }}">
                                         </div>
 
@@ -672,10 +672,10 @@
                                     <div class="inspector-entry mb-3 d-flex flex-wrap">
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="inspectors[0][inspector_name]"
-                                                class="form-label">ชื่อผู้ตรวจสอบ</label>
+                                                class="form-label">ชื่อกรรมการ</label>
                                             <select class="form-select" id="inspectors[0][inspector_name_select]"
                                                 onchange="setInspectorNameAndPosition(this, 'inspectors[0][inspector_name]', 'inspectors[0][inspector_position]')">
-                                                <option value="">-- เลือกผู้ตรวจสอบ --</option>
+                                                <option value="">-- เลือกกรรมการ --</option>
                                                 @foreach ($allInspectors as $availableInspector)
                                                     <option value="{{ $availableInspector->inspector_name }}">
                                                         {{ $availableInspector->inspector_name }}</option>
@@ -683,7 +683,7 @@
                                             </select>
                                             <input type="text" class="form-control mt-2"
                                                 id="inspectors[0][inspector_name]" name="inspectors[0][inspector_name]"
-                                                placeholder="ชื่อผู้ตรวจสอบ" required>
+                                                placeholder="ชื่อกรรมการ" required>
                                         </div>
                                         <div class="flex-fill mb-2 me-2">
                                             <label for="inspectors[0][inspector_position]"

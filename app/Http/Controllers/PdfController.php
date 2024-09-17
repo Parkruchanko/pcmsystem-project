@@ -70,15 +70,31 @@ class PdfController extends Controller
             }
         }
 
-        // เติมข้อมูล products แต่ละรายการ
         if (isset($data['products'])) {
+            // เติมข้อมูลสินค้าลงในตารางโดยใช้ cloneRow
+            $templateProcessor->cloneRow('product_name', count($data['products']));
             foreach ($data['products'] as $index => $product) {
+                // เติมข้อมูลในตาราง
+                $templateProcessor->setValue("item_number#" . ($index + 1), $index + 1);
                 $templateProcessor->setValue("product_name#" . ($index + 1), $product['product_name']);
                 $templateProcessor->setValue("quantity#" . ($index + 1), $product['quantity']);
                 $templateProcessor->setValue("unit#" . ($index + 1), $product['unit']);
                 $templateProcessor->setValue("product_price#" . ($index + 1), $product['product_price']);
             }
+            
+            // เติมข้อมูลสินค้าที่อยู่ด้านนอกตาราง (แค่เลขหน้าและชื่อสินค้า)
+            $productDetailsOutside = ''; // สร้างข้อความเปล่าเพื่อเก็บรายละเอียดสินค้าที่อยู่นอกตาราง
+            foreach ($data['products'] as $index => $product) {
+                // สร้างข้อความเฉพาะเลขหน้าและชื่อสินค้า
+                $productDetailsOutside .= ($index + 1) . ' ' . $product['product_name'] . "\n";
+            }
+            
+            // เติมข้อมูลลงใน Placeholder เดียว (นอกตาราง)
+            $templateProcessor->setValue('product_details_outside', $productDetailsOutside);
         }
+        
+        
+
 
         // เติมข้อมูล committeemembers แต่ละรายการ
         if (isset($data['committeemembers'])) {
